@@ -1,5 +1,10 @@
-.App {
+.form-group {
+  padding: 10px;
+}
+
+.Form {
   text-align: center;
+  padding: 50px;
 }
 
 .App-logo {
