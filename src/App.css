@@ -1,7 +1,10 @@
-.form-group {
-  padding: 10px;
-}
 
+#root {
+  padding: 30px;
+}
+#submitted {
+  visibility: hidden;
+}
 .Form {
   text-align: center;
   padding: 50px;
