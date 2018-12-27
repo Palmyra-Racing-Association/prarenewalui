@@ -34,8 +34,11 @@ const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("submitted").style.visibility= "visible" ;
-  
-  axios.post('http://localhost:8000/members/renew/'+token)
+
+  axios.post('http://localhost:8000/members/renew/', {
+    token: token,
+    insCopy: formData.insuranceCapture
+  })
   .then(function (response) {
     console.log(response);
   })
