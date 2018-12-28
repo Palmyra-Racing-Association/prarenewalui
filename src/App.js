@@ -71,6 +71,11 @@ export default class App extends React.Component {
         onSubmit={onSubmit}
         onError={log("errors")}>
       <div>
+        Please <a target="new" href="http://www.palmyramx.com/wordpress/wp-content/uploads/2017/02/PRA-Rules-And-Sound.pdf">click here to read the rules </a> 
+        before submitting your acknowledgement if you have any questions on the rules.  Note that all rules are subject to change.
+        <p/>
+      </div>
+      <div>
         <button id="submitBtn" type="submit" className="btn btn-info">Submit</button>
       </div>
       <div id="submitted">
