@@ -31,7 +31,7 @@ const apiUrl = Env.api_url;
 let formData = {
 }
 
-let token = window.location.pathname.replace(/\//g, "");
+let token = window.location.search.replace(/\?token=/g, "");
 
 const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
