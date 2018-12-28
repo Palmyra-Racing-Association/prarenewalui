@@ -4,6 +4,7 @@ import './App.css';
 import Form from "react-jsonschema-form";
 import schema from './schemas/FormSchema';
 import axios from 'axios';
+import Env from './Env'
 
 const uischema = {
   "firstName": {
@@ -25,17 +26,19 @@ const uischema = {
     "ui:widget": "hidden"
   }
 };
+const apiUrl = Env.api_url;
 
 let formData = {
 }
 
 let token = window.location.pathname.replace(/\//g, "");
+
 const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("submitted").style.visibility= "visible" ;
 
-  axios.post('http://localhost:8000/members/renew/', {
+  axios.post(apiUrl+'/members/renew/', {
     token: token,
     insCopy: formData.insuranceCapture
   })
@@ -49,7 +52,7 @@ const onSubmit = ({formData}) => {
 export default class App extends React.Component {
  
   async componentWillMount() {
-    let memberResponse = await axios.get('http://localhost:8000/members/'+token);
+    let memberResponse = await axios.get(apiUrl+'/members/'+token);
     let data = memberResponse.data;
     formData.lastName = data.last_name;
     formData.firstName = data.first_name;
