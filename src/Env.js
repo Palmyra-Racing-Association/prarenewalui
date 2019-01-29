@@ -1,3 +1,3 @@
 module.exports = {
-    "api_url": "http://ec2-52-91-197-49.compute-1.amazonaws.com:8000"
+    "api_url": "https://628gl9s809.execute-api.us-east-1.amazonaws.com/latest"
 }

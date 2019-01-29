@@ -5,6 +5,9 @@
 #submitted {
   visibility: hidden;
 }
+#loading {
+  visibility: hidden;
+}
 .Form {
   text-align: center;
   padding: 50px;

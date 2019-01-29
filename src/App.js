@@ -4,7 +4,8 @@ import './App.css';
 import Form from "react-jsonschema-form";
 import schema from './schemas/FormSchema';
 import axios from 'axios';
-import Env from './Env'
+import Env from './Env';
+import Processing_Please_Wait from './Processing_Please_Wait.gif';
 
 const uischema = {
   "firstName": {
@@ -36,14 +37,15 @@ let token = window.location.search.replace(/\?token=/g, "");
 const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
-  document.getElementById("submitted").style.visibility= "visible" ;
-
+  document.getElementById("loading").style.visibility = "visible";
   axios.post(apiUrl+'/members/renew/', {
     token: token,
     insCopy: formData.insuranceCapture
   })
   .then(function (response) {
     console.log(response);
+    document.getElementById("loading").style.visibility = "hidden";
+    document.getElementById("submitted").style.visibility= "visible" ;
   })
   .catch(function (error) {
     console.log(error);
@@ -77,6 +79,9 @@ export default class App extends React.Component {
       </div>
       <div>
         <button id="submitBtn" type="submit" className="btn btn-info">Submit</button>
+      </div>
+      <div id="loading">
+        <img src={Processing_Please_Wait} alt="loading"></img>
       </div>
       <div id="submitted">
         Thanks for submitting your renewal!  You should be all set, just send your payment per the 
