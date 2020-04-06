@@ -102,7 +102,7 @@ const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("submitted").style.visibility= "visible";
-  axios.post('http://localhost:8000'+'/members/captureBikes', formData)
+  axios.post(Env.api_url+'/members/captureBikes', formData)
   .then(function (response) {
     console.log(response);
   })
