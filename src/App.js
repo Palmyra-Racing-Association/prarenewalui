@@ -14,7 +14,7 @@ export default class App extends React.Component {
 						<FamilyAndBikes/>
 					</Route>
 					<Route path="/">
-						<Renew/>
+						<FamilyAndBikes/>
 					</Route>
 				</Switch>
 			</Router>
