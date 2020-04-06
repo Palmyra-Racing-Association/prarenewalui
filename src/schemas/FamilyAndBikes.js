@@ -31,30 +31,13 @@ module.exports =
         "title": "City"
       },
       "zip": {
-        "type": "number",
-        "title": "Zip",
-        "minimum": 11111,
-        "maximum": 99999
+        "type": "string",
+        "title": "Zip"
       },
-      "fixedItemsList": {
-        "type": "array",
-        "title": "A list of fixed items",
-        "items": [
-          {
-            "title": "A string value",
-            "type": "string",
-            "default": "lorem ipsum"
-          },
-          {
-            "title": "a boolean value",
-            "type": "boolean"
-          }
-        ],
-        "additionalItems": {
-          "title": "Additional item",
-          "type": "number"
-        }
-      },
+      "familyMembers": {
+        "type": "string",
+        "title": "textarea"
+      },   
       "token": {
         "type": "string"
       }

@@ -10,11 +10,11 @@ export default class App extends React.Component {
 		<div>
 			<Router>
 				<Switch>
-					<Route path="/renew">
-						<Renew/>
-					</Route>
 					<Route path="/familyAndBikes">
 						<FamilyAndBikes/>
+					</Route>
+					<Route path="/">
+						<Renew/>
 					</Route>
 				</Switch>
 			</Router>

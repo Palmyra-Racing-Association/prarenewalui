@@ -11,3 +11,9 @@
   form > p {
 	padding: 1em;
   }
+  #submitted {
+	visibility: hidden;
+  }
+  #loading {
+	visibility: hidden;
+  }
