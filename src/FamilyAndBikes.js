@@ -43,6 +43,11 @@ const schema = {
       "type": "string",
       "title": "City"
     },
+    "state": {
+      "type": "string",
+      "title": "State",
+      "default": "NY",
+    },
     "zip": {
       "type": "string",
       "title": "Zip"
@@ -130,6 +135,9 @@ const uischema = {
   "street": {
     "ui:autofocus": true,
     "classNames": "smallField"
+  },
+  "state": {
+    "ui:readonly": true,
   },
   "familyMembers": {
     "ui:widget": "textarea",
