@@ -17,3 +17,26 @@
   #loading {
 	visibility: hidden;
   }
+  .form-control {
+    width: 75%;
+  }
+  .field-array-of-string {
+    width: 100%;
+  }
+  legend#root_familyMembers__title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  legend#root_bikes__title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  select.form-control {
+    width: 50%;
+  }
+  input.form-control {
+    width: 50%;
+  }
+  .row {
+    width: 50%;
+  }

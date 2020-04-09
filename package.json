@@ -1,11 +1,12 @@
 {
   "name": "prarenewalui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "dependencies": {
     "axios": "^0.19.2",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^3.3.7",
     "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
     "popper": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

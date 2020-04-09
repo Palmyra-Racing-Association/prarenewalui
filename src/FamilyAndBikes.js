@@ -1,14 +1,15 @@
 import React from 'react';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.css";
 import './FamilyAndBikes.css';
 import Form from "react-jsonschema-form";
 import axios from 'axios';
 import Env from './Env';
+import _ from 'lodash';
 
 const schema = {
   "title": "PRA Member bike sticker program",
-  "description": "You information is displayed below.  Please update your address if it is out of date - this is the address we will mail your stickers to."+
-    "  Also be sure to add your family members, and bikes.",
+  "description": "Your information is displayed below.  Please update your address if it is out of date - this is the address we will mail your stickers to."+
+    "  Also be sure to add your family members, and at least one bike.",
   "type": "object",
   "required": [
     "firstName",
@@ -16,6 +17,7 @@ const schema = {
     "address",
     "city",
     "zip",
+    "phone",
     "bikes"
   ],
   "properties": {
@@ -44,35 +46,89 @@ const schema = {
       "type": "string",
       "title": "Zip"
     },
+    "phone": {
+      "type": "string",
+      "title": "Phone"
+    },  
     "familyMembers": {
-      "type": "string",
-      "title": "Family Members (please enter one per line.  If your the only one on a membership, there's no need to include yourself here)"
-    },   
+      "title": "Family Members (please enter one per line.  If your the only one on a membership, there's no need to include yourself here)",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/FamilyMember"
+      }
+    },
     "bikes": {
-      "type": "string",
-      "title": "Bikes (please enter Year Make Model, ie: 2018 KTM 250 EXC-F), one per line.  At least one required."
+      "type": "array",
+      "title": "Please list all bikes you intend to ride at PRA (at least one required)",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/Bike"
+      }
     },
     "token": {
       "type": "string"
     }
+  },
+  "definitions": {
+    "FamilyMember": {
+      "type": "object",
+      required: ['firstName', 'lastName'],
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First Name"
+        },
+        "lastName": {
+          "type": "string",
+          "title": "Last Name"
+        }        
+      }
+    },
+    "Bike": {
+      "type": "object",
+      "required": [ 'year', 'make', 'model'],
+      "properties": {
+        "year": {
+          "type": "number",
+          "enum": _.rangeRight(1968, (new Date()).getFullYear()+1)
+        },
+        "make": {
+          "type": "string",
+          "enum": [
+            "Alta", "Cobra", "Gas Gas", "Honda", "Husqvarna", "Kawasaki", "KTM", "Suzuki", "Yamaha"
+          ]
+        },
+        "model": {
+          "type": "string"
+        }
+      }
+    }
   }
+
 };
 
 const uischema = {
   "firstName": {
-    "ui:autofocus": true,
+    "ui:autofocus": false,
     "ui:emptyValue": "",
     "ui:readonly": true,
+    "classNames": "smallField"
   },
   "lastName": {
     "ui:autofocus": false,
     "ui:emptyValue": "",
     "ui:readonly": true,
+    "classNames": "smallField"
   }, 
   "email": {
     "ui:autofocus": false,
     "ui:emptyValue": "",
     "ui:readonly": true,
+    "classNames": "smallField"
+  },
+  "street": {
+    "ui:autofocus": true,
+    "classNames": "smallField"
   },
   "familyMembers": {
     "ui:widget": "textarea",
@@ -81,10 +137,7 @@ const uischema = {
     }
   },
   "bikes": {
-    "ui:widget": "textarea",
-    "ui:options": {
-      "rows": 5
-    }
+    classNames: "small-field"
   },  
   "token": {
     "ui:widget": "hidden"
@@ -102,6 +155,8 @@ const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("submitted").style.visibility= "visible";
+  alert(JSON.stringify(formData));
+  
   axios.post(Env.api_url+'/members/captureBikes', formData)
   .then(function (response) {
     console.log(response);
@@ -109,7 +164,7 @@ const onSubmit = ({formData}) => {
   .catch(function (error) {
     console.log(error);
   });
-
+  
 }
 export default class FamilyAndBikes extends React.Component {
 
@@ -122,7 +177,8 @@ export default class FamilyAndBikes extends React.Component {
 	  formData.address = data.address;
 	  formData.city = data.city;
 	  formData.state = data.state;
-	  formData.zip = data.zip;
+    formData.zip = data.zip;
+    formData.phone = data.phone;
     formData.token = token;    
     //console.log(formData);  
     this.setState({formData});
