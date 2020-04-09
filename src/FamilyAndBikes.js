@@ -57,7 +57,7 @@ const schema = {
       "title": "Phone"
     },  
     "familyMembers": {
-      "title": "Family Members (please enter one per line.  If your the only one on a membership, there's no need to include yourself here)",
+      "title": "Family Members (please enter one per line.  If you're the only one on a membership, there's no need to include yourself here)",
       "type": "array",
       "items": {
         "$ref": "#/definitions/FamilyMember"
