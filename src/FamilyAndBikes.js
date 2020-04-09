@@ -9,7 +9,8 @@ import _ from 'lodash';
 const schema = {
   "title": "PRA Member bike sticker program",
   "description": "Your information is displayed below.  Please update your address if it is out of date - this is the address we will mail your stickers to."+
-    "  Also be sure to add your family members, and at least one bike.",
+    " Please do the same for your phone number if necesssary.  " +
+    "  Also be sure to add your family members, and at least one bike.  If you are the only person on a membership, you don't need to add yourself, but you do need to add at least one bike.",
   "type": "object",
   "required": [
     "firstName",
@@ -155,7 +156,6 @@ const onSubmit = ({formData}) => {
   console.log("Data submitted: ",  formData);
   document.getElementById("submitBtn").disabled = true;
   document.getElementById("submitted").style.visibility= "visible";
-  alert(JSON.stringify(formData));
   
   axios.post(Env.api_url+'/members/captureBikes', formData)
   .then(function (response) {
