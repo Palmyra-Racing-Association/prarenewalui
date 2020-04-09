@@ -101,7 +101,7 @@ const schema = {
         "make": {
           "type": "string",
           "enum": [
-            "Alta", "Cobra", "Gas Gas", "Honda", "Husqvarna", "Kawasaki", "KTM", "Suzuki", "Yamaha"
+            "Alta", "Cobra", "Gas Gas", "Honda", "Husqvarna", "Kawasaki", "KTM", "Sherco", "Suzuki", "TM", "Yamaha", "Other"
           ]
         },
         "model": {
