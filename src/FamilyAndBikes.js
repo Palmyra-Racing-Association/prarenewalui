@@ -71,6 +71,17 @@ const schema = {
         "$ref": "#/definitions/Bike"
       }
     },
+    "insuranceCapture": {
+      "type": "string",
+      "format": "data-url",
+      "title": 
+        "Upload a copy of your insurance card(s). You can take a picture with your phone and attach it. You can also scan it. "+
+        "If can't upload it you can email or mail it. (optional if you've not done it yet)",
+    },
+    "agreement": {
+      "type": "string",
+      "title": "Agree to the rules.  Type YOUR NAME I agree.  YOUR NAME has already been filled in for you. (Optional if you have not done it yet)"
+    },
     "token": {
       "type": "string"
     }
@@ -108,7 +119,7 @@ const schema = {
           "type": "string"
         }
       }
-    }
+    },    
   }
 
 };
