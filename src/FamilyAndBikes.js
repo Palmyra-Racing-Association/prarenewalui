@@ -7,10 +7,11 @@ import Env from './Env';
 import _ from 'lodash';
 
 const schema = {
-  "title": "PRA Member bike sticker program",
+  "title": "PRA Member Renewal Form",
   "description": "Your information is displayed below.  Please update your address if it is out of date - this is the address we will mail your stickers to."+
     " Please do the same for your phone number if necesssary.  " +
-    "  Also be sure to add your family members, and at least one bike.  If you are the only person on a membership, you don't need to add yourself, but you do need to add at least one bike.",
+    "  Also be sure to add your family members, and at least one bike.  If you are the only person on a membership, you don't need to add yourself, but you do need to add at least one bike. " +
+    "Finally, please be sure to re-read the rules which you can find at http://www.palmyramx.com/wordpress/wp-content/uploads/2017/02/PRA-Rules-And-Sound.pdf.  Your renewal implies that you agree to these.",
   "type": "object",
   "required": [
     "firstName",
@@ -19,7 +20,8 @@ const schema = {
     "city",
     "zip",
     "phone",
-    "bikes"
+    "bikes",
+    "insuranceCapture"
   ],
   "properties": {
     "firstName": {
@@ -55,7 +57,7 @@ const schema = {
     "phone": {
       "type": "string",
       "title": "Phone"
-    },  
+    },
     "familyMembers": {
       "title": "Family Members (please enter one per line.  If you're the only one on a membership, there's no need to include yourself here)",
       "type": "array",
@@ -74,13 +76,11 @@ const schema = {
     "insuranceCapture": {
       "type": "string",
       "format": "data-url",
-      "title": 
-        "Upload a copy of your insurance card(s). You can take a picture with your phone and attach it. You can also scan it. "+
-        "If can't upload it you can email or mail it. (optional if you've not done it yet)",
+      "title": "Upload a copy of your insurance card(s)."
     },
     "agreement": {
       "type": "string",
-      "title": "Agree to the rules.  Type YOUR NAME I agree.  YOUR NAME has already been filled in for you. (Optional if you have not done it yet)"
+      "title": "Agree to the rules.  Type YOUR NAME I agree.  This has already been filled in for you."
     },
     "token": {
       "type": "string"
@@ -98,7 +98,12 @@ const schema = {
         "lastName": {
           "type": "string",
           "title": "Last Name"
-        }        
+        },
+        "age": {
+          "type": "number",
+          "enum": _.range(0, 100),
+          "title": "Age"
+        }
       }
     },
     "Bike": {
@@ -107,19 +112,22 @@ const schema = {
       "properties": {
         "year": {
           "type": "number",
-          "enum": _.rangeRight(1968, (new Date()).getFullYear()+1)
+          "enum": _.rangeRight(1968, (new Date()).getFullYear()+2),
+          "title": "Model Year"
         },
         "make": {
           "type": "string",
           "enum": [
-            "Alta", "Cobra", "Gas Gas", "Honda", "Husqvarna", "Kawasaki", "KTM", "Sherco", "Suzuki", "TM", "Yamaha", "Other"
-          ]
+            "Alta", "Cobra", "Gas Gas", "GPX", "Honda", "Husqvarna", "Kawasaki", "KTM", "Scorpa", "Sherco", "Suzuki", "Thumpstar", "TM", "Yamaha", "Other"
+          ],
+          "title": "Make"
         },
         "model": {
-          "type": "string"
+          "type": "string",
+          "title": "Model"
         }
       }
-    },    
+    },
   }
 
 };
@@ -136,7 +144,7 @@ const uischema = {
     "ui:emptyValue": "",
     "ui:readonly": true,
     "classNames": "smallField"
-  }, 
+  },
   "email": {
     "ui:autofocus": false,
     "ui:emptyValue": "",
@@ -157,12 +165,16 @@ const uischema = {
     }
   },
   "bikes": {
-    classNames: "small-field"
-  },  
+    "classNames": "smallField"
+  },
   "token": {
     "ui:widget": "hidden"
   },
- 
+  "insuranceCapture": {
+    "ui:help": "Tips for a good insurance card photo: reduce image quality in camera settings, or take the picture in black and white.  "+
+      "Or, do both.  Large files (500000 bytes or 5 MB) may fail to upload.  These tips will make yours a lot smaller than that."
+  }
+
 };
 const apiUrl = Env.api_url;
 
@@ -172,18 +184,17 @@ let formData = {
 let token = window.location.search.replace(/\?token=/g, "");
 
 const onSubmit = ({formData}) => {
-  console.log("Data submitted: ",  formData);
-  document.getElementById("submitBtn").disabled = true;
-  document.getElementById("submitted").style.visibility= "visible";
-  
-  axios.post(Env.api_url+'/members/captureBikes', formData)
+  axios.post(Env.api_url+'/members/renew', formData)
   .then(function (response) {
+    document.getElementById("submitBtn").disabled = true;
+    document.getElementById("submitted").style.visibility= "visible";
     console.log(response);
   })
   .catch(function (error) {
     console.log(error);
+    document.getElementById("error-submitting").style.visibility= "visible";
   });
-  
+
 }
 export default class FamilyAndBikes extends React.Component {
 
@@ -198,11 +209,12 @@ export default class FamilyAndBikes extends React.Component {
 	  formData.state = data.state;
     formData.zip = data.zip;
     formData.phone = data.phone;
-    formData.token = token;    
-    //console.log(formData);  
+    formData.token = token;
+    formData.agreement = data.first_name + ' ' + data.last_name + ' I agree'
+    //console.log(formData);
     this.setState({formData});
   }
-  render() { 
+  render() {
     const log = (type) => console.log.bind(console, type);
     return (
     <Form schema={schema} uiSchema={uischema} formData={formData}
@@ -213,7 +225,16 @@ export default class FamilyAndBikes extends React.Component {
         <button id="submitBtn" type="submit" className="btn btn-info">Submit</button>
       </div>
       <div id="submitted">
-        Thanks for submitting your information!  Your stickers should be mailed out soon!
+        Thanks for submitting your renewal!  You should be all set, just send your payment per the
+        instructions in email!
+      </div>
+      <div id="error-submitting">
+        Sorry, there was an error trying to submit your renewal.  Please take reduce the image quality of your phone camera, change the photo to black and white
+        after taking it, or take the picture from farther away.
+        <p/>
+        <a href="https://www.dummies.com/consumer-electronics/smartphones/droid/how-to-set-the-image-resolution-on-your-androids-camera-app/" target="_new">
+          How to reduce image quality on Android
+        </a>
       </div>
     </Form>
     );
