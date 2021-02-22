@@ -3,11 +3,11 @@
 	width: 50%;
 	padding: 0 1em;
   }
-  
+
   fieldset .myfield:nth-child(even) {
 	clear: left;
   }
-  
+
   form > p {
 	padding: 1em;
   }
@@ -16,6 +16,9 @@
   }
   #loading {
 	visibility: hidden;
+  }
+  #error-submitting {
+    visibility: hidden;
   }
   .form-control {
     width: 85%;

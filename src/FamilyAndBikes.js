@@ -89,7 +89,7 @@ const schema = {
   "definitions": {
     "FamilyMember": {
       "type": "object",
-      required: ['firstName', 'lastName'],
+      required: ['firstName', 'lastName', 'age'],
       "properties": {
         "firstName": {
           "type": "string",
