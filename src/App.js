@@ -1,7 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Renew from "./Renew"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FamilyAndBikes from "./FamilyAndBikes";
 export default class App extends React.Component { 
 
